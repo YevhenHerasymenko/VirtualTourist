@@ -147,8 +147,8 @@
 		C4895C041C09C55D004D8A2B /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				C4895C051C09C55D004D8A2B /* PinPhotosViewController.swift */,
 				C4895C061C09C55D004D8A2B /* VirtualTouristViewController.swift */,
+				C4895C051C09C55D004D8A2B /* PinPhotosViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";

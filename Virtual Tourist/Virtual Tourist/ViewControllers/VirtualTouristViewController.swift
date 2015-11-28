@@ -15,8 +15,15 @@ class VirtualTouristViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
+    //MARK: - Actions
 
     @IBAction func edit(sender: UIBarButtonItem) {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .Done, target: self, action: "done:")
+    }
+    
+    @IBAction func done(sender: UIBarButtonItem) {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .Plain, target: self, action: "edit:")
     }
     
     
