@@ -16,8 +16,42 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LgT-kv-0oy">
+                                <rect key="frame" x="0.0" y="540" width="600" height="60"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap Pins to Delete" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="puY-qf-Ywu">
+                                        <rect key="frame" x="231" y="19" width="139" height="21"/>
+                                        <animations/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <animations/>
+                                <color key="backgroundColor" red="1" green="0.30170136669999997" blue="0.15948735040000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="puY-qf-Ywu" firstAttribute="centerY" secondItem="LgT-kv-0oy" secondAttribute="centerY" id="5Az-yU-wdO"/>
+                                    <constraint firstItem="puY-qf-Ywu" firstAttribute="centerX" secondItem="LgT-kv-0oy" secondAttribute="centerX" id="vMm-M8-aet"/>
+                                    <constraint firstAttribute="height" constant="60" id="vxt-vz-MmA"/>
+                                </constraints>
+                            </view>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="bBB-7G-Dal">
+                                <rect key="frame" x="0.0" y="64" width="600" height="476"/>
+                                <animations/>
+                            </mapView>
+                        </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="bBB-7G-Dal" secondAttribute="trailing" id="3ES-lw-jzP"/>
+                            <constraint firstAttribute="trailing" secondItem="LgT-kv-0oy" secondAttribute="trailing" id="5Xe-9M-tto"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="LgT-kv-0oy" secondAttribute="bottom" id="7Vt-s6-JTb"/>
+                            <constraint firstItem="LgT-kv-0oy" firstAttribute="top" secondItem="bBB-7G-Dal" secondAttribute="bottom" id="QDD-pp-fc3"/>
+                            <constraint firstItem="bBB-7G-Dal" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="R9E-NL-Lnk"/>
+                            <constraint firstItem="LgT-kv-0oy" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Vo0-7o-Yjf"/>
+                            <constraint firstItem="bBB-7G-Dal" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="xqz-c7-xhX"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Virtual Tourist" id="Lgb-Xh-XXz">
                         <barButtonItem key="rightBarButtonItem" title="Edit" id="RzU-6E-9fW">
@@ -27,6 +61,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="heightBottomViewConstraint" destination="vxt-vz-MmA" id="On9-vV-jxW"/>
+                        <outlet property="mapView" destination="bBB-7G-Dal" id="de9-VS-7nP"/>
                         <outlet property="rightItem" destination="RzU-6E-9fW" id="tYt-ad-p2Z"/>
                         <segue destination="psS-2x-9Ce" kind="show" identifier="pinPhotosSegue" id="JQF-71-oFm"/>
                     </connections>
