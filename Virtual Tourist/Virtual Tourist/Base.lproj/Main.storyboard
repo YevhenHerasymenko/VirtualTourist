@@ -5,10 +5,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Virtual Tourist-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Virtual_Tourist" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="VirtualTouristViewController" customModule="Virtual_Tourist" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -19,8 +19,15 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="Lgb-Xh-XXz"/>
+                    <navigationItem key="navigationItem" title="Virtual Tourist" id="Lgb-Xh-XXz">
+                        <barButtonItem key="rightBarButtonItem" title="Edit" id="RzU-6E-9fW">
+                            <connections>
+                                <action selector="edit:" destination="BYZ-38-t0r" id="vSF-5a-RuY"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="rightItem" destination="RzU-6E-9fW" id="tYt-ad-p2Z"/>
                         <segue destination="psS-2x-9Ce" kind="show" identifier="pinPhotosSegue" id="JQF-71-oFm"/>
                     </connections>
                 </viewController>
@@ -28,10 +35,10 @@
             </objects>
             <point key="canvasLocation" x="503" y="297"/>
         </scene>
-        <!--View Controller-->
+        <!--Pin Photos View Controller-->
         <scene sceneID="t2z-80-DxU">
             <objects>
-                <viewController id="psS-2x-9Ce" sceneMemberID="viewController">
+                <viewController id="psS-2x-9Ce" customClass="PinPhotosViewController" customModule="Virtual_Tourist" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="gtW-ET-Ymp"/>
                         <viewControllerLayoutGuide type="bottom" id="h5b-S2-E7N"/>
@@ -42,6 +49,9 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="tU9-x6-IDM">
+                        <barButtonItem key="backBarButtonItem" title="OK" id="R4I-MK-2zw"/>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IQF-h9-czN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

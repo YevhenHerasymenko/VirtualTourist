@@ -10,10 +10,14 @@ import UIKit
 
 class VirtualTouristViewController: UIViewController {
 
+    @IBOutlet weak var rightItem: UIBarButtonItem!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
 
+    @IBAction func edit(sender: UIBarButtonItem) {
+    }
+    
+    
 }
