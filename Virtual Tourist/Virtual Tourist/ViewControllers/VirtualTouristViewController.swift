@@ -16,7 +16,7 @@ class VirtualTouristViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var heightBottomViewConstraint: NSLayoutConstraint!
     
     var longPressAddPinRecognizer: UILongPressGestureRecognizer!
-    var tapRemovePinRecognizer: UITapGestureRecognizer!
+    var isRemoving: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +28,6 @@ class VirtualTouristViewController: UIViewController, MKMapViewDelegate {
     
     func setupRecognizer() {
         longPressAddPinRecognizer = UILongPressGestureRecognizer(target: self, action: "longPressAddPinRecognizer:")
-        tapRemovePinRecognizer = UITapGestureRecognizer(target: self, action: "tapRemovePinRecognizer:")
         mapView.addGestureRecognizer(longPressAddPinRecognizer)
     }
     
@@ -36,7 +35,6 @@ class VirtualTouristViewController: UIViewController, MKMapViewDelegate {
         if recognizer.state != UIGestureRecognizerState.Began {
             return
         }
-        
         let touchPoint: CGPoint = recognizer.locationInView(mapView)
         let touchMapCoordinate = mapView.convertPoint(touchPoint, toCoordinateFromView: mapView)
         let annotation: MKPointAnnotation = MKPointAnnotation()
@@ -44,21 +42,15 @@ class VirtualTouristViewController: UIViewController, MKMapViewDelegate {
         mapView.addAnnotation(annotation)
     }
     
-    func tapRemovePinRecognizer(recognizer: UIGestureRecognizer) {
-        
-    }
-    
     //MARK: - Actions
 
     @IBAction func edit(sender: UIBarButtonItem) {
         mapView.removeGestureRecognizer(longPressAddPinRecognizer)
-        mapView.addGestureRecognizer(tapRemovePinRecognizer)
         heightBottomViewConstraint.constant = 60
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .Done, target: self, action: "done:")
     }
     
     @IBAction func done(sender: UIBarButtonItem) {
-        mapView.removeGestureRecognizer(tapRemovePinRecognizer)
         mapView.addGestureRecognizer(longPressAddPinRecognizer)
         heightBottomViewConstraint.constant = 0
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .Plain, target: self, action: "edit:")
