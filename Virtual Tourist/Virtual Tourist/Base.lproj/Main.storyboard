@@ -39,6 +39,9 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="bBB-7G-Dal">
                                 <rect key="frame" x="0.0" y="64" width="600" height="476"/>
                                 <animations/>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="rGd-Y1-x31"/>
+                                </connections>
                             </mapView>
                         </subviews>
                         <animations/>
