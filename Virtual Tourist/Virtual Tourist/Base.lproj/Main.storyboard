@@ -88,9 +88,6 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="tU9-x6-IDM">
-                        <barButtonItem key="backBarButtonItem" title="OK" id="R4I-MK-2zw"/>
-                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IQF-h9-czN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

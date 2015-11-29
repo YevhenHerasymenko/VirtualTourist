@@ -56,5 +56,12 @@ class VirtualTouristViewController: UIViewController, MKMapViewDelegate {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .Plain, target: self, action: "edit:")
     }
     
+    //MARK: - MapView Delegate
+    
+    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
+        performSegueWithIdentifier(SegueConstants.detailsSegue, sender: view)
+        mapView.deselectAnnotation(view.annotation, animated: true)
+    }
+    
     
 }

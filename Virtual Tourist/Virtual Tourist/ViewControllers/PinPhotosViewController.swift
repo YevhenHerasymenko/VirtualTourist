@@ -9,11 +9,16 @@
 import UIKit
 
 class PinPhotosViewController: UIViewController {
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        let backButton = UIBarButtonItem(title: "OK", style: .Plain, target: nil, action: nil)
+        self.navigationController!.navigationBar.topItem!.backBarButtonItem = backButton
     }
 
 }
