@@ -12,8 +12,8 @@ class NetworkManager {
     static let sharedInstance = NetworkManager()
     
     func getPhotos(longitude: Double, latitude: Double)  {
-        let params: [String : AnyObject] = ["format": "json", "api_key": 100, "lat": latitude, "lon": longitude]
-        let urlString = FlickrConstants.photosUrl + escapedParameters(params)
+        let params: [String : AnyObject] = ["method": FlickrConstants.searchPhotosMethod,"format": "json", "api_key": FlickrConstants.key, "lat": latitude, "lon": longitude, "nojsoncallback": 1]
+        let urlString = FlickrConstants.baseUrl + escapedParameters(params)
         let request = NSMutableURLRequest(URL: NSURL(string: urlString)!)
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request) { data, response, error in
@@ -22,9 +22,12 @@ class NetworkManager {
             }
             
             do {
-                let responseDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! NSDictionary
+                let responseDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
+                print(responseDictionary)
                 
-            } catch _ as NSError { }
+            } catch _ as NSError {
+            
+            }
         }
         task.resume()
         
