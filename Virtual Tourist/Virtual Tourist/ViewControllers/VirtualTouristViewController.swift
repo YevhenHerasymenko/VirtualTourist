@@ -39,6 +39,7 @@ class VirtualTouristViewController: UIViewController, MKMapViewDelegate {
         let touchMapCoordinate = mapView.convertPoint(touchPoint, toCoordinateFromView: mapView)
         let annotation: MKPointAnnotation = MKPointAnnotation()
         annotation.coordinate = touchMapCoordinate
+        NetworkManager.sharedInstance.getPhotos(touchMapCoordinate.longitude, latitude: touchMapCoordinate.latitude)
         mapView.addAnnotation(annotation)
     }
     
