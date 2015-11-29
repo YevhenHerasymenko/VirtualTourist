@@ -17,7 +17,8 @@
 		C4895C071C09C55D004D8A2B /* PinPhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4895C051C09C55D004D8A2B /* PinPhotosViewController.swift */; };
 		C4895C081C09C55D004D8A2B /* VirtualTouristViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4895C061C09C55D004D8A2B /* VirtualTouristViewController.swift */; };
 		C4895C0A1C09C56E004D8A2B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4895C091C09C56E004D8A2B /* Constants.swift */; };
-		C4895C0C1C09C6DB004D8A2B /* CoreDataStackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4895C0B1C09C6DB004D8A2B /* CoreDataStackManager.swift */; };
+		C4895C0F1C0B6407004D8A2B /* CoreDataStackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4895C0E1C0B6407004D8A2B /* CoreDataStackManager.swift */; };
+		C4895C111C0B6452004D8A2B /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4895C101C0B6452004D8A2B /* NetworkManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,7 +55,8 @@
 		C4895C051C09C55D004D8A2B /* PinPhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinPhotosViewController.swift; sourceTree = "<group>"; };
 		C4895C061C09C55D004D8A2B /* VirtualTouristViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VirtualTouristViewController.swift; sourceTree = "<group>"; };
 		C4895C091C09C56E004D8A2B /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		C4895C0B1C09C6DB004D8A2B /* CoreDataStackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStackManager.swift; sourceTree = "<group>"; };
+		C4895C0E1C0B6407004D8A2B /* CoreDataStackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStackManager.swift; sourceTree = "<group>"; };
+		C4895C101C0B6452004D8A2B /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,7 +109,7 @@
 			children = (
 				C4895BCE1C09C0A5004D8A2B /* AppDelegate.swift */,
 				C4895BD21C09C0A5004D8A2B /* Main.storyboard */,
-				C4895C0B1C09C6DB004D8A2B /* CoreDataStackManager.swift */,
+				C4895C0D1C0B6407004D8A2B /* Tools */,
 				C4895C031C09C55D004D8A2B /* Resources */,
 				C4895C041C09C55D004D8A2B /* ViewControllers */,
 				C4895BD81C09C0A5004D8A2B /* Assets.xcassets */,
@@ -151,6 +153,15 @@
 				C4895C051C09C55D004D8A2B /* PinPhotosViewController.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		C4895C0D1C0B6407004D8A2B /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				C4895C0E1C0B6407004D8A2B /* CoreDataStackManager.swift */,
+				C4895C101C0B6452004D8A2B /* NetworkManager.swift */,
+			);
+			path = Tools;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -287,9 +298,10 @@
 				C4895C071C09C55D004D8A2B /* PinPhotosViewController.swift in Sources */,
 				C4895BD71C09C0A5004D8A2B /* Virtual_Tourist.xcdatamodeld in Sources */,
 				C4895C0A1C09C56E004D8A2B /* Constants.swift in Sources */,
+				C4895C111C0B6452004D8A2B /* NetworkManager.swift in Sources */,
 				C4895BCF1C09C0A5004D8A2B /* AppDelegate.swift in Sources */,
 				C4895C081C09C55D004D8A2B /* VirtualTouristViewController.swift in Sources */,
-				C4895C0C1C09C6DB004D8A2B /* CoreDataStackManager.swift in Sources */,
+				C4895C0F1C0B6407004D8A2B /* CoreDataStackManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

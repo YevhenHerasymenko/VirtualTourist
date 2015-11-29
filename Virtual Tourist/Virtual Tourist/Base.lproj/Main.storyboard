@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Virtual Tourist-->
@@ -85,9 +86,59 @@
                     <view key="view" contentMode="scaleToFill" id="jUP-qw-Pif">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="FGJ-vk-cmI">
+                                <rect key="frame" x="0.0" y="64" width="600" height="150"/>
+                                <animations/>
+                                <connections>
+                                    <outlet property="delegate" destination="psS-2x-9Ce" id="OP0-G9-6r1"/>
+                                </connections>
+                            </mapView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Yxj-lc-eum">
+                                <rect key="frame" x="0.0" y="214" width="600" height="386"/>
+                                <animations/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="aFR-ks-vRA">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="WPC-SX-Bex">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <animations/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <animations/>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="psS-2x-9Ce" id="x2s-es-qKj"/>
+                                    <outlet property="delegate" destination="psS-2x-9Ce" id="q1d-7K-W02"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="FGJ-vk-cmI" firstAttribute="top" secondItem="gtW-ET-Ymp" secondAttribute="bottom" id="3Nb-pP-9YO"/>
+                            <constraint firstItem="FGJ-vk-cmI" firstAttribute="height" secondItem="jUP-qw-Pif" secondAttribute="height" multiplier="0.25" id="8E5-qe-Cdw"/>
+                            <constraint firstItem="h5b-S2-E7N" firstAttribute="top" secondItem="Yxj-lc-eum" secondAttribute="bottom" id="brH-Zi-Hz7"/>
+                            <constraint firstAttribute="trailing" secondItem="FGJ-vk-cmI" secondAttribute="trailing" id="d6D-9h-Toe"/>
+                            <constraint firstItem="Yxj-lc-eum" firstAttribute="top" secondItem="FGJ-vk-cmI" secondAttribute="bottom" id="dgF-iY-4he"/>
+                            <constraint firstItem="FGJ-vk-cmI" firstAttribute="leading" secondItem="jUP-qw-Pif" secondAttribute="leading" id="fg1-do-vGm"/>
+                            <constraint firstItem="Yxj-lc-eum" firstAttribute="leading" secondItem="jUP-qw-Pif" secondAttribute="leading" id="xE5-ll-Wsl"/>
+                            <constraint firstAttribute="trailing" secondItem="Yxj-lc-eum" secondAttribute="trailing" id="xJV-i0-A7w"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="collectionView" destination="Yxj-lc-eum" id="VL2-k5-drY"/>
+                        <outlet property="mapView" destination="FGJ-vk-cmI" id="hp9-Km-chH"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IQF-h9-czN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

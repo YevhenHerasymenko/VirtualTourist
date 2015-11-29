@@ -7,8 +7,13 @@
 //
 
 import UIKit
+import MapKit
 
 class PinPhotosViewController: UIViewController {
+    
+    @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var collectionView: UICollectionView!
+    
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
