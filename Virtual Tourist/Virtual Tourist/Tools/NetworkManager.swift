@@ -10,6 +10,7 @@ import Foundation
 
 class NetworkManager {
     static let sharedInstance = NetworkManager()
+    static let imageCache = ImageCache()
     
     func getPhotos(longitude: Double, latitude: Double)  {
         let params: [String : AnyObject] = ["method": FlickrConstants.searchPhotosMethod,"format": "json", "api_key": FlickrConstants.key, "extras": "url_m", "lat": latitude, "lon": longitude, "nojsoncallback": 1]

@@ -12,6 +12,9 @@ import CoreData
 
 class Pin: NSManagedObject {
 
-// Insert code here to add functionality to your managed object subclass
+    @NSManaged var longitude: NSNumber?
+    @NSManaged var latitude: NSNumber?
+    @NSManaged var id: NSNumber?
+    @NSManaged var photos: NSSet?
 
 }
