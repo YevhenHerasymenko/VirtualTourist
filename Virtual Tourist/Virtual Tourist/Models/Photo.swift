@@ -11,10 +11,15 @@ import CoreData
 import UIKit
 
 class Photo: NSManagedObject {
+    
+    struct Keys {
+        static let Title = "title"
+        static let Url = "url_m"
+        static let ID = "id"
+    }
 
-    @NSManaged var id: NSNumber?
+    @NSManaged var id: String?
     @NSManaged var title: String?
-    @NSManaged var url: String?
     @NSManaged var pin: Pin?
     @NSManaged var imagePath: String?
     
@@ -29,9 +34,9 @@ class Photo: NSManagedObject {
         super.init(entity: entity,insertIntoManagedObjectContext: context)
         
 
-//        name = dictionary[Keys.Name] as! String
-//        id = dictionary[Keys.ID] as! Int
-//        imagePath = dictionary[Keys.ProfilePath] as? String
+        title = dictionary[Keys.Title] as? String
+        id = dictionary[Keys.ID] as? String
+        imagePath = dictionary[Keys.Url] as? String
     }
     
     var image: UIImage? {

@@ -21,6 +21,8 @@ class VirtualTouristViewController: UIViewController, MKMapViewDelegate {
     var longPressAddPinRecognizer: UILongPressGestureRecognizer!
     var isRemoving: Bool = false
     
+    var pins = [Pin]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         heightBottomViewConstraint.constant = 0
@@ -50,9 +52,21 @@ class VirtualTouristViewController: UIViewController, MKMapViewDelegate {
         let annotation: MKPointAnnotation = MKPointAnnotation()
         annotation.coordinate = touchMapCoordinate
         NetworkManager.sharedInstance.getPhotos(touchMapCoordinate.longitude, latitude: touchMapCoordinate.latitude) { (result, error) -> Void in
-            print(result)
+            if (error != nil) {
+                self.showAlert((error?.description)!)
+            } else {
+                if let resultDictionaries = result.valueForKey("photos") as? [String : AnyObject] {
+                    if let photoDictionaries = resultDictionaries["photo"] as? [[String : AnyObject]] {
+                        let pin: Pin = Pin(longitude: touchMapCoordinate.longitude, latitude: touchMapCoordinate.latitude, photosDictionary: photoDictionaries, context: self.temporaryContext)
+                        self.pins.append(pin)
+                    }
+                }
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.mapView.addAnnotation(annotation)
+                }
+            }
         }
-        mapView.addAnnotation(annotation)
+        
     }
     
     //MARK: - Actions
@@ -74,6 +88,15 @@ class VirtualTouristViewController: UIViewController, MKMapViewDelegate {
     func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
         performSegueWithIdentifier(SegueConstants.detailsSegue, sender: view)
         mapView.deselectAnnotation(view.annotation, animated: true)
+    }
+    
+    //MARK: - Alert
+    
+    func showAlert(title: String) {
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+        let alertOkAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil)
+        alertController.addAction(alertOkAction)
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
     
     
