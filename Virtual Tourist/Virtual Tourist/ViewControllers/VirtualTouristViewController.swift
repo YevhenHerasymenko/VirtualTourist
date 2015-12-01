@@ -16,8 +16,6 @@ class VirtualTouristViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var heightBottomViewConstraint: NSLayoutConstraint!
     
-    var temporaryContext: NSManagedObjectContext!
-    
     var longPressAddPinRecognizer: UILongPressGestureRecognizer!
     var isRemoving: Bool = false
     
@@ -27,14 +25,31 @@ class VirtualTouristViewController: UIViewController, MKMapViewDelegate {
         super.viewDidLoad()
         heightBottomViewConstraint.constant = 0
         setupRecognizer()
-        setupTemporaryContext()
     }
     
-    func setupTemporaryContext() {
-        let sharedContext = CoreDataStackManager.sharedInstance.managedObjectContext
-        temporaryContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
-        temporaryContext.persistentStoreCoordinator = sharedContext.persistentStoreCoordinator
+    // MARK: - Core Data Convenience
+    
+    var sharedContext: NSManagedObjectContext {
+        return CoreDataStackManager.sharedInstance.managedObjectContext
     }
+    
+    // Mark: - Fetched Results Controller
+    
+    lazy var fetchedResultsController: NSFetchedResultsController = {
+        
+        let fetchRequest = NSFetchRequest(entityName: "Pin")
+        
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        //fetchRequest.predicate = NSPredicate(format: "pin == %@", self.pin);
+        
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
+            managedObjectContext: self.sharedContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil)
+        
+        return fetchedResultsController
+        
+    }()
     
     //MARK: - Recognizer
     
@@ -57,8 +72,9 @@ class VirtualTouristViewController: UIViewController, MKMapViewDelegate {
             } else {
                 if let resultDictionaries = result.valueForKey("photos") as? [String : AnyObject] {
                     if let photoDictionaries = resultDictionaries["photo"] as? [[String : AnyObject]] {
-                        let pin: Pin = Pin(longitude: touchMapCoordinate.longitude, latitude: touchMapCoordinate.latitude, photosDictionary: photoDictionaries, context: self.temporaryContext)
+                        let pin: Pin = Pin(longitude: touchMapCoordinate.longitude, latitude: touchMapCoordinate.latitude, photosDictionary: photoDictionaries, context: self.sharedContext)
                         self.pins.append(pin)
+                        CoreDataStackManager.sharedInstance.saveContext()
                     }
                 }
                 dispatch_async(dispatch_get_main_queue()) {
