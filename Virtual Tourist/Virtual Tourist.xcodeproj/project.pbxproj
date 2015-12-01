@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C45958D81C0D991000934E10 /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45958D71C0D991000934E10 /* PhotoCollectionViewCell.swift */; };
 		C4895BCF1C09C0A5004D8A2B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4895BCE1C09C0A5004D8A2B /* AppDelegate.swift */; };
 		C4895BD41C09C0A5004D8A2B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4895BD21C09C0A5004D8A2B /* Main.storyboard */; };
 		C4895BD71C09C0A5004D8A2B /* Virtual_Tourist.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C4895BD51C09C0A5004D8A2B /* Virtual_Tourist.xcdatamodeld */; };
@@ -42,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C45958D71C0D991000934E10 /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		C4895BCB1C09C0A5004D8A2B /* Virtual Tourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Virtual Tourist.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4895BCE1C09C0A5004D8A2B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C4895BD31C09C0A5004D8A2B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -90,6 +92,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C45958D61C0D98F600934E10 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C45958D71C0D991000934E10 /* PhotoCollectionViewCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		C4895BC21C09C0A5004D8A2B = {
 			isa = PBXGroup;
 			children = (
@@ -113,6 +123,7 @@
 		C4895BCD1C09C0A5004D8A2B /* Virtual Tourist */ = {
 			isa = PBXGroup;
 			children = (
+				C45958D61C0D98F600934E10 /* Views */,
 				C4895C121C0CEDF9004D8A2B /* Models */,
 				C4895BCE1C09C0A5004D8A2B /* AppDelegate.swift */,
 				C4895BD21C09C0A5004D8A2B /* Main.storyboard */,
@@ -321,6 +332,7 @@
 				C4895BCF1C09C0A5004D8A2B /* AppDelegate.swift in Sources */,
 				C4895C1A1C0CEE3B004D8A2B /* Photo.swift in Sources */,
 				C4895C081C09C55D004D8A2B /* VirtualTouristViewController.swift in Sources */,
+				C45958D81C0D991000934E10 /* PhotoCollectionViewCell.swift in Sources */,
 				C4895C0F1C0B6407004D8A2B /* CoreDataStackManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

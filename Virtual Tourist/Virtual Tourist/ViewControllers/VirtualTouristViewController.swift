@@ -8,12 +8,15 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 class VirtualTouristViewController: UIViewController, MKMapViewDelegate {
 
     @IBOutlet weak var rightItem: UIBarButtonItem!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var heightBottomViewConstraint: NSLayoutConstraint!
+    
+    var temporaryContext: NSManagedObjectContext!
     
     var longPressAddPinRecognizer: UILongPressGestureRecognizer!
     var isRemoving: Bool = false
@@ -22,6 +25,13 @@ class VirtualTouristViewController: UIViewController, MKMapViewDelegate {
         super.viewDidLoad()
         heightBottomViewConstraint.constant = 0
         setupRecognizer()
+        setupTemporaryContext()
+    }
+    
+    func setupTemporaryContext() {
+        let sharedContext = CoreDataStackManager.sharedInstance.managedObjectContext
+        temporaryContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
+        temporaryContext.persistentStoreCoordinator = sharedContext.persistentStoreCoordinator
     }
     
     //MARK: - Recognizer
@@ -39,7 +49,9 @@ class VirtualTouristViewController: UIViewController, MKMapViewDelegate {
         let touchMapCoordinate = mapView.convertPoint(touchPoint, toCoordinateFromView: mapView)
         let annotation: MKPointAnnotation = MKPointAnnotation()
         annotation.coordinate = touchMapCoordinate
-        NetworkManager.sharedInstance.getPhotos(touchMapCoordinate.longitude, latitude: touchMapCoordinate.latitude)
+        NetworkManager.sharedInstance.getPhotos(touchMapCoordinate.longitude, latitude: touchMapCoordinate.latitude) { (result, error) -> Void in
+            print(result)
+        }
         mapView.addAnnotation(annotation)
     }
     
