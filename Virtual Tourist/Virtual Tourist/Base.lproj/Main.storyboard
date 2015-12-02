@@ -116,6 +116,7 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4eM-QL-A9a">
                                                     <rect key="frame" x="4" y="4" width="92" height="92"/>
                                                     <animations/>
+                                                    <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                                 </imageView>
                                                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="I29-dw-kDi">
                                                     <rect key="frame" x="40" y="40" width="20" height="20"/>
@@ -172,6 +173,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bottomButton" destination="fEP-h8-ZhA" id="heU-rT-b84"/>
                         <outlet property="collectionView" destination="Yxj-lc-eum" id="VL2-k5-drY"/>
                         <outlet property="mapView" destination="FGJ-vk-cmI" id="hp9-Km-chH"/>
                     </connections>
