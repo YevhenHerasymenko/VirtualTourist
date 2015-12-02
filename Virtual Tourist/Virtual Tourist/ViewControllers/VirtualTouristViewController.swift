@@ -87,23 +87,33 @@ class VirtualTouristViewController: UIViewController, MKMapViewDelegate {
     
     func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
         let annotation = view.annotation
-        if isRemoving {
-            let request = NSFetchRequest(entityName: "Pin")
-            let latitude = NSNumber(double: (annotation?.coordinate.latitude)!)
-            let longitude = NSNumber(double: (annotation?.coordinate.longitude)!)
-            request.predicate = NSPredicate(format: "latitude == %@ AND longitude == %@", latitude, longitude)
-            do {
-                let pins: [Pin] = try sharedContext.executeFetchRequest(request) as! [Pin]
-                sharedContext.deleteObject(pins[0])
+        let request = NSFetchRequest(entityName: "Pin")
+        let latitude = NSNumber(double: (annotation?.coordinate.latitude)!)
+        let longitude = NSNumber(double: (annotation?.coordinate.longitude)!)
+        request.predicate = NSPredicate(format: "latitude == %@ AND longitude == %@", latitude, longitude)
+        do {
+            let pins: [Pin] = try sharedContext.executeFetchRequest(request) as! [Pin]
+            let pin = pins[0]
+            if isRemoving {
+                sharedContext.deleteObject(pin)
                 CoreDataStackManager.sharedInstance.saveContext()
                 mapView.removeAnnotation(annotation!)
-            } catch let error as NSError {
-                showAlert(error.description)
+            } else {
+                performSegueWithIdentifier(SegueConstants.detailsSegue, sender: pin)
+                mapView.deselectAnnotation(annotation, animated: true)
             }
-        } else {
-            performSegueWithIdentifier(SegueConstants.detailsSegue, sender: view)
-            mapView.deselectAnnotation(annotation, animated: true)
+
+        } catch let error as NSError {
+            showAlert(error.description)
         }
+        
+    }
+    
+    //MARK: - Segue
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let photosController = segue.destinationViewController as! PinPhotosViewController
+        photosController.pin = sender as! Pin
     }
     
     //MARK: - Alert
