@@ -34,6 +34,7 @@ class PinPhotosViewController: UIViewController, UICollectionViewDelegate, UICol
         fetchedResultsController.delegate = self
         setupMapView()
         bottomButton.addTarget(self, action: "loadNewCollection", forControlEvents: UIControlEvents.TouchUpInside)
+        
     }
     
     func setupMapView() {
@@ -64,6 +65,16 @@ class PinPhotosViewController: UIViewController, UICollectionViewDelegate, UICol
         return photoCell
     }
     
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        let photoCell: PhotoCollectionViewCell = collectionView.cellForItemAtIndexPath(indexPath) as! PhotoCollectionViewCell
+        photoCell.selectView.hidden = false
+    }
+    
+    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
+        let photoCell: PhotoCollectionViewCell = collectionView.cellForItemAtIndexPath(indexPath) as! PhotoCollectionViewCell
+        photoCell.selectView.hidden = true
+    }
+    
     //MARK: - Actions
     
     func loadNewCollection() {
@@ -75,9 +86,9 @@ class PinPhotosViewController: UIViewController, UICollectionViewDelegate, UICol
     
     lazy var fetchedResultsController: NSFetchedResultsController = {
         
-        let fetchRequest = NSFetchRequest(entityName: "Pin")
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
-        fetchRequest.predicate = NSPredicate(format: "self == %@", self.pin);
+        let fetchRequest = NSFetchRequest(entityName: "Photo")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        fetchRequest.predicate = NSPredicate(format: "pin = %@", self.pin);
         
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
             managedObjectContext: self.sharedContext,
@@ -89,6 +100,10 @@ class PinPhotosViewController: UIViewController, UICollectionViewDelegate, UICol
     }()
     
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
+        print("hello")
+    }
+    
+    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         
     }
 

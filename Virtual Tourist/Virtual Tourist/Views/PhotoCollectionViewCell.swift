@@ -10,7 +10,12 @@ import UIKit
 
 class PhotoCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var photoImageView: UIImageView!
+    @IBOutlet weak var selectView: UIView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
+    override func prepareForReuse() {
+        selected = false
+    }
     
     override func awakeFromNib() {
         photoImageView.layer.masksToBounds = true
@@ -19,6 +24,8 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     
     func configure(photo: Photo) {
         if photo.image != nil {
+            self.activityIndicator.startAnimating()
+            self.activityIndicator.hidden = true
             photoImageView.image = photo.image
         } else {
             activityIndicator.startAnimating()

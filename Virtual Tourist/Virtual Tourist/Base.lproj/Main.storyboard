@@ -122,22 +122,32 @@
                                                     <rect key="frame" x="40" y="40" width="20" height="20"/>
                                                     <animations/>
                                                 </activityIndicatorView>
+                                                <view hidden="YES" alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OPm-s5-276">
+                                                    <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                                    <animations/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </view>
                                             </subviews>
                                             <animations/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <animations/>
                                         <constraints>
+                                            <constraint firstItem="OPm-s5-276" firstAttribute="leading" secondItem="WPC-SX-Bex" secondAttribute="leading" id="2O1-Ct-j5a"/>
+                                            <constraint firstItem="OPm-s5-276" firstAttribute="top" secondItem="WPC-SX-Bex" secondAttribute="top" id="34b-u5-Jnl"/>
                                             <constraint firstItem="4eM-QL-A9a" firstAttribute="leading" secondItem="WPC-SX-Bex" secondAttribute="leadingMargin" constant="-4" id="7IA-ds-ZxC"/>
                                             <constraint firstItem="I29-dw-kDi" firstAttribute="centerX" secondItem="WPC-SX-Bex" secondAttribute="centerX" id="8p5-7W-Ic8"/>
                                             <constraint firstItem="4eM-QL-A9a" firstAttribute="bottom" secondItem="WPC-SX-Bex" secondAttribute="bottomMargin" constant="4" id="BoF-pN-YVF"/>
+                                            <constraint firstAttribute="trailing" secondItem="OPm-s5-276" secondAttribute="trailing" id="Nm6-yA-UO2"/>
                                             <constraint firstItem="I29-dw-kDi" firstAttribute="centerY" secondItem="WPC-SX-Bex" secondAttribute="centerY" id="ZkM-4g-bh2"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="4eM-QL-A9a" secondAttribute="trailing" constant="-4" id="ZyV-RP-oM9"/>
                                             <constraint firstItem="4eM-QL-A9a" firstAttribute="top" secondItem="WPC-SX-Bex" secondAttribute="topMargin" constant="-4" id="h4z-zp-fy8"/>
+                                            <constraint firstAttribute="bottom" secondItem="OPm-s5-276" secondAttribute="bottom" id="qe7-DA-Rcb"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="activityIndicator" destination="I29-dw-kDi" id="zbS-Ke-ca3"/>
                                             <outlet property="photoImageView" destination="4eM-QL-A9a" id="Ija-8J-s2X"/>
+                                            <outlet property="selectView" destination="OPm-s5-276" id="tSU-mn-doj"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
