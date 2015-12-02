@@ -12,6 +12,8 @@ import UIKit
 
 class Photo: NSManagedObject {
     
+    typealias ImageHander = (image: UIImage) -> Void
+    
     struct Keys {
         static let Title = "title"
         static let Url = "url_m"
@@ -22,6 +24,8 @@ class Photo: NSManagedObject {
     @NSManaged var title: String?
     @NSManaged var pin: Pin?
     @NSManaged var imagePath: String?
+    
+    var loadedImage: ImageHander!
     
     override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
         super.init(entity: entity, insertIntoManagedObjectContext: context)
@@ -37,6 +41,22 @@ class Photo: NSManagedObject {
         title = dictionary[Keys.Title] as? String
         id = dictionary[Keys.ID] as? String
         imagePath = dictionary[Keys.Url] as? String
+        downloadImage(NSURL(string: imagePath!)!)
+
+    }
+    
+    func downloadImage(url: NSURL){
+        getDataFromUrl(url) { (data, response, error)  in
+                guard let data = data where error == nil else { return }
+                let loadImage = UIImage(data: data)
+                self.image = loadImage
+        }
+    }
+    
+    func getDataFromUrl(url:NSURL, completion: ((data: NSData?, response: NSURLResponse?, error: NSError? ) -> Void)) {
+        NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) in
+            completion(data: data, response: response, error: error)
+            }.resume()
     }
     
     var image: UIImage? {
@@ -45,7 +65,13 @@ class Photo: NSManagedObject {
         }
         
         set {
-            NetworkManager.imageCache.storeImage(image, withIdentifier: imagePath!)
+            NetworkManager.imageCache.storeImage(newValue, withIdentifier: imagePath!)
+            if let loadedImage = loadedImage {
+                dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                    loadedImage(image: newValue!)
+                }
+                
+            }
         }
     }
 
