@@ -21,7 +21,7 @@ class Pin: NSManagedObject {
         super.init(entity: entity, insertIntoManagedObjectContext: context)
     }
     
-    init(longitude: Double, latitude: Double, photosDictionary: [[String : AnyObject]], context: NSManagedObjectContext) {
+    init(longitude: Double, latitude: Double, /*photosDictionary: [[String : AnyObject]],*/ context: NSManagedObjectContext) {
         let entity =  NSEntityDescription.entityForName("Pin", inManagedObjectContext: context)!
         
         super.init(entity: entity,insertIntoManagedObjectContext: context)
@@ -29,9 +29,26 @@ class Pin: NSManagedObject {
         self.longitude = longitude
         self.latitude = latitude
         id = Int(NSDate().timeIntervalSince1970.description)
-        let photos = photosDictionary.map() {
-            Photo(dictionary: $0, context: context)
+        loadPhotos(context)
+    }
+    
+    func loadPhotos(context: NSManagedObjectContext) {
+        NetworkManager.sharedInstance.getPhotos((longitude?.doubleValue)!, latitude: (latitude?.doubleValue)!) { (result, error) -> Void in
+            if (error != nil) {
+                //self.showAlert((error?.description)!)
+            } else {
+                if let resultDictionaries = result.valueForKey("photos") as? [String : AnyObject] {
+                    if let photoDictionaries = resultDictionaries["photo"] as? [[String : AnyObject]] {
+                        let photos = photoDictionaries.map() {
+                            Photo(dictionary: $0, context: context)
+                        }
+                        self.photos = Set(photos)
+                        dispatch_async(dispatch_get_main_queue()) {
+                            CoreDataStackManager.sharedInstance.saveContext()
+                        }
+                    }
+                }
+            }
         }
-        self.photos = Set(photos)
     }
 }

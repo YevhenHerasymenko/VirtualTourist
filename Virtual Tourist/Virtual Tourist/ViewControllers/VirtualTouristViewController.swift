@@ -19,12 +19,25 @@ class VirtualTouristViewController: UIViewController, MKMapViewDelegate {
     var longPressAddPinRecognizer: UILongPressGestureRecognizer!
     var isRemoving: Bool = false
     
-    var pins = [Pin]()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         heightBottomViewConstraint.constant = 0
         setupRecognizer()
+        let request = NSFetchRequest(entityName: "Pin")
+        do {
+            let pins: [Pin] = try sharedContext.executeFetchRequest(request) as! [Pin]
+            var annotations = Array<MKPointAnnotation>()
+            for pin in pins {
+                let annotation = MKPointAnnotation()
+                let latitude = pin.latitude?.doubleValue
+                let longitude = pin.longitude?.doubleValue
+                annotation.coordinate = CLLocationCoordinate2DMake(latitude!, longitude!)
+                annotations.append(annotation)
+            }
+            mapView.addAnnotations(annotations)
+        } catch let error as NSError {
+            showAlert(error.description)
+        }
     }
     
     // MARK: - Core Data Convenience
@@ -32,24 +45,6 @@ class VirtualTouristViewController: UIViewController, MKMapViewDelegate {
     var sharedContext: NSManagedObjectContext {
         return CoreDataStackManager.sharedInstance.managedObjectContext
     }
-    
-    // Mark: - Fetched Results Controller
-    
-    lazy var fetchedResultsController: NSFetchedResultsController = {
-        
-        let fetchRequest = NSFetchRequest(entityName: "Pin")
-        
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-        //fetchRequest.predicate = NSPredicate(format: "pin == %@", self.pin);
-        
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
-            managedObjectContext: self.sharedContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil)
-        
-        return fetchedResultsController
-        
-    }()
     
     //MARK: - Recognizer
     
@@ -66,23 +61,10 @@ class VirtualTouristViewController: UIViewController, MKMapViewDelegate {
         let touchMapCoordinate = mapView.convertPoint(touchPoint, toCoordinateFromView: mapView)
         let annotation: MKPointAnnotation = MKPointAnnotation()
         annotation.coordinate = touchMapCoordinate
-        NetworkManager.sharedInstance.getPhotos(touchMapCoordinate.longitude, latitude: touchMapCoordinate.latitude) { (result, error) -> Void in
-            if (error != nil) {
-                self.showAlert((error?.description)!)
-            } else {
-                if let resultDictionaries = result.valueForKey("photos") as? [String : AnyObject] {
-                    if let photoDictionaries = resultDictionaries["photo"] as? [[String : AnyObject]] {
-                        let pin: Pin = Pin(longitude: touchMapCoordinate.longitude, latitude: touchMapCoordinate.latitude, photosDictionary: photoDictionaries, context: self.sharedContext)
-                        self.pins.append(pin)
-                        CoreDataStackManager.sharedInstance.saveContext()
-                    }
-                }
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.mapView.addAnnotation(annotation)
-                }
-            }
-        }
-        
+        _ = Pin(longitude: touchMapCoordinate.longitude,
+                latitude: touchMapCoordinate.latitude,
+                context: self.sharedContext)
+        self.mapView.addAnnotation(annotation)
     }
     
     //MARK: - Actions
@@ -90,20 +72,38 @@ class VirtualTouristViewController: UIViewController, MKMapViewDelegate {
     @IBAction func edit(sender: UIBarButtonItem) {
         mapView.removeGestureRecognizer(longPressAddPinRecognizer)
         heightBottomViewConstraint.constant = 60
+        isRemoving = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .Done, target: self, action: "done:")
     }
     
     @IBAction func done(sender: UIBarButtonItem) {
         mapView.addGestureRecognizer(longPressAddPinRecognizer)
         heightBottomViewConstraint.constant = 0
+        isRemoving = false
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .Plain, target: self, action: "edit:")
     }
     
     //MARK: - MapView Delegate
     
     func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
-        performSegueWithIdentifier(SegueConstants.detailsSegue, sender: view)
-        mapView.deselectAnnotation(view.annotation, animated: true)
+        let annotation = view.annotation
+        if isRemoving {
+            let request = NSFetchRequest(entityName: "Pin")
+            let latitude = NSNumber(double: (annotation?.coordinate.latitude)!)
+            let longitude = NSNumber(double: (annotation?.coordinate.longitude)!)
+            request.predicate = NSPredicate(format: "latitude == %@ AND longitude == %@", latitude, longitude)
+            do {
+                let pins: [Pin] = try sharedContext.executeFetchRequest(request) as! [Pin]
+                sharedContext.deleteObject(pins[0])
+                CoreDataStackManager.sharedInstance.saveContext()
+                mapView.removeAnnotation(annotation!)
+            } catch let error as NSError {
+                showAlert(error.description)
+            }
+        } else {
+            performSegueWithIdentifier(SegueConstants.detailsSegue, sender: view)
+            mapView.deselectAnnotation(annotation, animated: true)
+        }
     }
     
     //MARK: - Alert
