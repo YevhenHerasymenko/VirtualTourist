@@ -102,6 +102,7 @@ class PinPhotosViewController: UIViewController, UICollectionViewDelegate, UICol
         CoreDataStackManager.sharedInstance.saveContext()
         collectionView.reloadData()
         pin.loadPhotos(sharedContext, page: page)
+        page = page + 1
     }
     
     func removePhotos() {
@@ -144,16 +145,13 @@ class PinPhotosViewController: UIViewController, UICollectionViewDelegate, UICol
         return fetchedResultsController
     }()
     
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
-        print("hello")
-    }
-    
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
-        print(type)
+        if type == .Insert {
+            collectionView.reloadData()
+        }
     }
     
     func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
-        collectionView.reloadData()
     }
 
 }
