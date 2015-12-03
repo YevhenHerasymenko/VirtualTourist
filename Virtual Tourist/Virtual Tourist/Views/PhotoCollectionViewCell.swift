@@ -15,6 +15,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         selected = false
+        selectView.hidden = true
     }
     
     override func awakeFromNib() {

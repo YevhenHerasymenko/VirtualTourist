@@ -19,6 +19,8 @@ class PinPhotosViewController: UIViewController, UICollectionViewDelegate, UICol
     var pin: Pin!
     var photos: [Photo]!
     
+    var selectedIndexes: [Int]!
+    
     var page: Int!
     
     override func viewWillAppear(animated: Bool) {
@@ -34,6 +36,8 @@ class PinPhotosViewController: UIViewController, UICollectionViewDelegate, UICol
         fetchedResultsController.delegate = self
         setupMapView()
         bottomButton.addTarget(self, action: "loadNewCollection", forControlEvents: UIControlEvents.TouchUpInside)
+        collectionView.allowsMultipleSelection = true
+        selectedIndexes = Array<Int>()
         
     }
     
@@ -62,23 +66,37 @@ class PinPhotosViewController: UIViewController, UICollectionViewDelegate, UICol
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let photoCell: PhotoCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("photoCell", forIndexPath: indexPath) as! PhotoCollectionViewCell
         photoCell.configure(photos[indexPath.row])
+        if selectedIndexes.contains(indexPath.row) {
+            photoCell.selectView.hidden = false
+            photoCell.selected = true
+        }
         return photoCell
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let photoCell: PhotoCollectionViewCell = collectionView.cellForItemAtIndexPath(indexPath) as! PhotoCollectionViewCell
         photoCell.selectView.hidden = false
+        selectedIndexes.append(indexPath.row)
+        if selectedIndexes.count == 1 {
+            bottomButton.addTarget(self, action: "removePhotos", forControlEvents: UIControlEvents.TouchUpInside)
+            bottomButton.setTitle("Remove Selected Pictures", forState: UIControlState.Normal)
+        }
     }
     
     func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
         let photoCell: PhotoCollectionViewCell = collectionView.cellForItemAtIndexPath(indexPath) as! PhotoCollectionViewCell
         photoCell.selectView.hidden = true
+        selectedIndexes.removeAtIndex(selectedIndexes.indexOf(indexPath.row)!)
     }
     
     //MARK: - Actions
     
     func loadNewCollection() {
         pin.loadPhotos(sharedContext, page: page)
+    }
+    
+    func removePhotos() {
+        
     }
     
     
