@@ -40,10 +40,12 @@ class Pin: NSManagedObject {
             } else {
                 if let resultDictionaries = result.valueForKey("photos") as? [String : AnyObject] {
                     if let photoDictionaries = resultDictionaries["photo"] as? [[String : AnyObject]] {
-                        for photoDictionary: [String: AnyObject] in photoDictionaries {
-                            let photo = Photo(dictionary: photoDictionary, context: context)
-                            photo.pin = self
-                        }
+                        context.performBlockAndWait({ () -> Void in
+                            for photoDictionary: [String: AnyObject] in photoDictionaries {
+                                let photo = Photo(dictionary: photoDictionary, context: context)
+                                photo.pin = self
+                            }
+                        })
                         dispatch_async(dispatch_get_main_queue()) {
                             CoreDataStackManager.sharedInstance.saveContext()
                         }

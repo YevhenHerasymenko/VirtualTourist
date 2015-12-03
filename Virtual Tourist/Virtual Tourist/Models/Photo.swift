@@ -41,8 +41,7 @@ class Photo: NSManagedObject {
         title = dictionary[Keys.Title] as? String
         id = dictionary[Keys.ID] as? String
         imagePath = dictionary[Keys.Url] as? String
-        downloadImage(NSURL(string: imagePath!)!)
-
+        downloadImage(NSURL(string: self.imagePath!)!)
     }
     
     func downloadImage(url: NSURL){
@@ -60,7 +59,7 @@ class Photo: NSManagedObject {
     }
     
     override func prepareForDeletion() {
-        
+        NetworkManager.imageCache.deleteImage(imagePath!)
     }
     
     var image: UIImage? {
@@ -69,12 +68,11 @@ class Photo: NSManagedObject {
         }
         
         set {
-            NetworkManager.imageCache.storeImage(newValue, withIdentifier: imagePath!)
-            if let loadedImage = loadedImage {
-                dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                NetworkManager.imageCache.storeImage(newValue, withIdentifier: self.imagePath!)
+                if let loadedImage = self.loadedImage {
                     loadedImage(image: newValue!)
                 }
-                
             }
         }
     }

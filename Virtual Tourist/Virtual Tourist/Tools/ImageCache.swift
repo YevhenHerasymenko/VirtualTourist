@@ -51,8 +51,7 @@ class ImageCache {
         
         // And in documents directory
         let data = UIImagePNGRepresentation(image!)!
-        let success = data.writeToFile(path, atomically: true)
-        print(success)
+        data.writeToFile(path, atomically: true)
     }
     
     // MARK: - Deleting image

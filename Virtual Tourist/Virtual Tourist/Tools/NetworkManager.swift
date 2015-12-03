@@ -15,7 +15,7 @@ class NetworkManager {
     static let sharedInstance = NetworkManager()
     static let imageCache = ImageCache()
     
-    func getPhotos(longitude: Double, latitude: Double, page: Int, completionHandler: CompletionHander)  {
+    func getPhotos(longitude: Double, latitude: Double, inout page: Int, completionHandler: CompletionHander)  {
         let params: [String : AnyObject] = ["method": FlickrConstants.searchPhotosMethod,"format": "json", "api_key": FlickrConstants.key, "per_page" : 21, "page" : page, "extras": "url_m", "lat": latitude, "lon": longitude, "nojsoncallback": 1]
         let urlString = FlickrConstants.baseUrl + escapedParameters(params)
         let request = NSMutableURLRequest(URL: NSURL(string: urlString)!)
@@ -26,6 +26,7 @@ class NetworkManager {
             } else {
                 NetworkManager.parseJSONWithCompletionHandler(data!, completionHandler: completionHandler)
             }
+            page = page+1
         }
         task.resume()
         

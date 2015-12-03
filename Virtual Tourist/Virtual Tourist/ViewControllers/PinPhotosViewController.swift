@@ -102,7 +102,6 @@ class PinPhotosViewController: UIViewController, UICollectionViewDelegate, UICol
         CoreDataStackManager.sharedInstance.saveContext()
         collectionView.reloadData()
         pin.loadPhotos(sharedContext, page: page)
-        page = page + 1
     }
     
     func removePhotos() {
