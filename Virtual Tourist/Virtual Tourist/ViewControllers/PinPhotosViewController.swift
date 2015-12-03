@@ -21,7 +21,7 @@ class PinPhotosViewController: UIViewController, UICollectionViewDelegate, UICol
     
     var selectedIndexes: [NSIndexPath]!
     
-    var page: Int!
+    var page: Int = 2
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -32,7 +32,6 @@ class PinPhotosViewController: UIViewController, UICollectionViewDelegate, UICol
         do {
             try fetchedResultsController.performFetch()
         } catch {}
-        page = 2
         let backButton = UIBarButtonItem(title: "OK", style: .Plain, target: nil, action: nil)
         self.navigationController!.navigationBar.topItem!.backBarButtonItem = backButton
         setupMapView()
@@ -102,6 +101,7 @@ class PinPhotosViewController: UIViewController, UICollectionViewDelegate, UICol
         CoreDataStackManager.sharedInstance.saveContext()
         collectionView.reloadData()
         pin.loadPhotos(sharedContext, page: page)
+        page = page+1
     }
     
     func removePhotos() {

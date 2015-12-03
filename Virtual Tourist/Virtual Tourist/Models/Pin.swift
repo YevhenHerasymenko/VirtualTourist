@@ -29,10 +29,10 @@ class Pin: NSManagedObject {
         self.longitude = longitude
         self.latitude = latitude
         id = Int(NSDate().timeIntervalSince1970.description)
-        loadPhotos(context, page: 1)
+        loadPhotos(context)
     }
     
-    func loadPhotos(context: NSManagedObjectContext, page: Int) {
+    func loadPhotos(context: NSManagedObjectContext, page: Int = 1) {
         NetworkManager.sharedInstance.getPhotos((longitude?.doubleValue)!, latitude: (latitude?.doubleValue)!, page: page) { (result, error) -> Void in
             if (error != nil) {
                 print(error?.description)
