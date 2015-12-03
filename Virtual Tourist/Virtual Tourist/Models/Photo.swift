@@ -59,6 +59,10 @@ class Photo: NSManagedObject {
             }.resume()
     }
     
+    override func prepareForDeletion() {
+        
+    }
+    
     var image: UIImage? {
         get {
             return NetworkManager.imageCache.imageWithIdentifier(imagePath)

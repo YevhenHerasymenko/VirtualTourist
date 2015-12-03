@@ -39,18 +39,12 @@ class ImageCache {
     // MARK: - Saving images
     
     func storeImage(image: UIImage?, withIdentifier identifier: String) {
-        let path = pathForIdentifier(identifier)
-        
         // If the image is nil, remove images from the cache
         if image == nil {
-            inMemoryCache.removeObjectForKey(path)
-            
-            do {
-                try NSFileManager.defaultManager().removeItemAtPath(path)
-            } catch _ {}
-            
+            deleteImage(identifier)
             return
         }
+        let path = pathForIdentifier(identifier)
         
         // Otherwise, keep the image in memory
         inMemoryCache.setObject(image!, forKey: path)
@@ -59,6 +53,18 @@ class ImageCache {
         let data = UIImagePNGRepresentation(image!)!
         let success = data.writeToFile(path, atomically: true)
         print(success)
+    }
+    
+    // MARK: - Deleting image
+    
+    func deleteImage(identifier: String) {
+        let path = pathForIdentifier(identifier)
+        inMemoryCache.removeObjectForKey(path)
+        
+        do {
+            try NSFileManager.defaultManager().removeItemAtPath(path)
+        } catch _ {}
+        
     }
     
     // MARK: - Helper
