@@ -12,14 +12,14 @@ import CoreData
 
 class PinPhotosViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, NSFetchedResultsControllerDelegate {
     
+    @IBOutlet weak var noImageLabel: UILabel!
     @IBOutlet weak var bottomButton: UIButton!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     
     var pin: Pin!
-    var photos: [Photo]!
     
-    var selectedIndexes: [Int]!
+    var selectedIndexes: [NSIndexPath]!
     
     var page: Int!
     
@@ -29,16 +29,18 @@ class PinPhotosViewController: UIViewController, UICollectionViewDelegate, UICol
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {}
         page = 2
-        self.photos = pin.photos?.allObjects as! [Photo]
         let backButton = UIBarButtonItem(title: "OK", style: .Plain, target: nil, action: nil)
         self.navigationController!.navigationBar.topItem!.backBarButtonItem = backButton
-        fetchedResultsController.delegate = self
         setupMapView()
         bottomButton.addTarget(self, action: "loadNewCollection", forControlEvents: UIControlEvents.TouchUpInside)
         collectionView.allowsMultipleSelection = true
-        selectedIndexes = Array<Int>()
-        
+        selectedIndexes = Array<NSIndexPath>()
+        noImageLabel.hidden = !pin.photos.isEmpty
+        bottomButton.enabled = !pin.photos.isEmpty
     }
     
     func setupMapView() {
@@ -60,13 +62,13 @@ class PinPhotosViewController: UIViewController, UICollectionViewDelegate, UICol
     //MARK: - Collection View
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photos.count
+        return fetchedResultsController.sections![section].numberOfObjects //pin.photos.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let photoCell: PhotoCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("photoCell", forIndexPath: indexPath) as! PhotoCollectionViewCell
-        photoCell.configure(photos[indexPath.row])
-        if selectedIndexes.contains(indexPath.row) {
+        photoCell.configure(fetchedResultsController.objectAtIndexPath(indexPath) as! Photo)
+        if selectedIndexes.contains(indexPath) {
             photoCell.selectView.hidden = false
             photoCell.selected = true
         }
@@ -76,8 +78,9 @@ class PinPhotosViewController: UIViewController, UICollectionViewDelegate, UICol
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let photoCell: PhotoCollectionViewCell = collectionView.cellForItemAtIndexPath(indexPath) as! PhotoCollectionViewCell
         photoCell.selectView.hidden = false
-        selectedIndexes.append(indexPath.row)
+        selectedIndexes.append(indexPath)
         if selectedIndexes.count == 1 {
+            bottomButton.removeTarget(self, action: "loadNewCollection", forControlEvents: UIControlEvents.TouchUpInside)
             bottomButton.addTarget(self, action: "removePhotos", forControlEvents: UIControlEvents.TouchUpInside)
             bottomButton.setTitle("Remove Selected Pictures", forState: UIControlState.Normal)
         }
@@ -86,17 +89,42 @@ class PinPhotosViewController: UIViewController, UICollectionViewDelegate, UICol
     func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
         let photoCell: PhotoCollectionViewCell = collectionView.cellForItemAtIndexPath(indexPath) as! PhotoCollectionViewCell
         photoCell.selectView.hidden = true
-        selectedIndexes.removeAtIndex(selectedIndexes.indexOf(indexPath.row)!)
+        
+        selectedIndexes.removeAtIndex(selectedIndexes.indexOf(indexPath)!)
     }
     
     //MARK: - Actions
     
     func loadNewCollection() {
+        for photo in pin.photos {
+            sharedContext.deleteObject(photo)
+        }
+        CoreDataStackManager.sharedInstance.saveContext()
+        collectionView.reloadData()
         pin.loadPhotos(sharedContext, page: page)
     }
     
     func removePhotos() {
-        
+        collectionView.performBatchUpdates({ () -> Void in
+            var photos = Array<Photo>()
+            for indexPath in self.selectedIndexes {
+                let photo = self.fetchedResultsController.objectAtIndexPath(indexPath)
+                photos.append(photo as! Photo)
+                
+     
+            }
+            for photo in photos {
+                self.sharedContext.deleteObject(photo)
+            }
+            CoreDataStackManager.sharedInstance.saveContext()
+            self.collectionView.deleteItemsAtIndexPaths(self.selectedIndexes)
+            self.selectedIndexes.removeAll()
+            }) { (success) -> Void in
+                CoreDataStackManager.sharedInstance.saveContext()
+                self.bottomButton.removeTarget(self, action: "removePhotos", forControlEvents: UIControlEvents.TouchUpInside)
+                self.bottomButton.addTarget(self, action: "loadNewCollection", forControlEvents: UIControlEvents.TouchUpInside)
+                self.bottomButton.setTitle("New Collection", forState: UIControlState.Normal)
+        }
     }
     
     
@@ -112,9 +140,8 @@ class PinPhotosViewController: UIViewController, UICollectionViewDelegate, UICol
             managedObjectContext: self.sharedContext,
             sectionNameKeyPath: nil,
             cacheName: nil)
-        
+        fetchedResultsController.delegate = self
         return fetchedResultsController
-        
     }()
     
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
@@ -122,7 +149,11 @@ class PinPhotosViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
-        
+        print(type)
+    }
+    
+    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+        collectionView.reloadData()
     }
 
 }

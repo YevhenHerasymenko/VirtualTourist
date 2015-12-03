@@ -15,7 +15,7 @@ class Pin: NSManagedObject {
     @NSManaged var longitude: NSNumber?
     @NSManaged var latitude: NSNumber?
     @NSManaged var id: NSNumber?
-    @NSManaged var photos: NSSet?
+    @NSManaged var photos: [Photo]
     
     override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
         super.init(entity: entity, insertIntoManagedObjectContext: context)
@@ -35,14 +35,16 @@ class Pin: NSManagedObject {
     func loadPhotos(context: NSManagedObjectContext, page: Int) {
         NetworkManager.sharedInstance.getPhotos((longitude?.doubleValue)!, latitude: (latitude?.doubleValue)!, page: page) { (result, error) -> Void in
             if (error != nil) {
+                print(error?.description)
                 //self.showAlert((error?.description)!)
             } else {
                 if let resultDictionaries = result.valueForKey("photos") as? [String : AnyObject] {
                     if let photoDictionaries = resultDictionaries["photo"] as? [[String : AnyObject]] {
-                        let photos = photoDictionaries.map() {
-                            Photo(dictionary: $0, context: context)
+                        let _ = photoDictionaries.map() { (dictionary: [String : AnyObject]) -> Photo in
+                            let photo = Photo(dictionary: dictionary, context: context)
+                            photo.pin = self
+                            return photo
                         }
-                        self.photos = Set(photos)
                         dispatch_async(dispatch_get_main_queue()) {
                             CoreDataStackManager.sharedInstance.saveContext()
                         }
