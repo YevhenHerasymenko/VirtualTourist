@@ -16,7 +16,7 @@ class NetworkManager {
     static let imageCache = ImageCache()
     
     func getPhotos(longitude: Double, latitude: Double, page: Int, completionHandler: CompletionHander)  {
-        let params: [String : AnyObject] = ["method": FlickrConstants.searchPhotosMethod,"format": "json", "api_key": FlickrConstants.key, "per_page" : 21, "page" : page, "extras": "url_m", "lat": latitude, "lon": longitude, "nojsoncallback": 1]
+        let params: [String : AnyObject] = ["method": FlickrConstants.searchPhotosMethod,"format": "json", "api_key": FlickrConstants.key, "per_page" : 21, "page" : page, "extras": "url_m", "lat": latitude+20, "lon": longitude, "nojsoncallback": 1]
         let urlString = FlickrConstants.baseUrl + escapedParameters(params)
         let request = NSMutableURLRequest(URL: NSURL(string: urlString)!)
         let session = NSURLSession.sharedSession()
@@ -24,7 +24,7 @@ class NetworkManager {
             if error != nil {
                 completionHandler(result: nil, error: error)
             } else {
-                NetworkManager.parseJSONWithCompletionHandler(data!, completionHandler: completionHandler)
+                //NetworkManager.parseJSONWithCompletionHandler(data!, completionHandler: completionHandler)
             }
         }
         task.resume()

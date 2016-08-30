@@ -46,7 +46,7 @@ class PinPhotosViewController: UIViewController, UICollectionViewDelegate, UICol
         let annotation = MKPointAnnotation()
         let latitude = pin.latitude?.doubleValue
         let longitude = pin.longitude?.doubleValue
-        annotation.coordinate = CLLocationCoordinate2DMake(latitude!, longitude!)
+        annotation.coordinate = CLLocationCoordinate2DMake(latitude!+1, longitude!+1)
         mapView.addAnnotation(annotation)
         mapView.region = MKCoordinateRegion(center: annotation.coordinate, span: MKCoordinateSpanMake(1, 1))
         mapView.centerCoordinate = annotation.coordinate
@@ -65,7 +65,7 @@ class PinPhotosViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let photoCell: PhotoCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("photoCell", forIndexPath: indexPath) as! PhotoCollectionViewCell
+        let photoCell: PhotoCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("photoCelll", forIndexPath: indexPath) as! PhotoCollectionViewCell
         photoCell.configure(fetchedResultsController.objectAtIndexPath(indexPath) as! Photo)
         if selectedIndexes.contains(indexPath) {
             photoCell.selectView.hidden = false
@@ -146,7 +146,7 @@ class PinPhotosViewController: UIViewController, UICollectionViewDelegate, UICol
     
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         if type == .Insert {
-            collectionView.reloadData()
+            //collectionView.reloadData()
         }
     }
     

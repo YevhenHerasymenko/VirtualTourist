@@ -49,7 +49,7 @@ class VirtualTouristViewController: UIViewController, MKMapViewDelegate {
     //MARK: - Recognizer
     
     func setupRecognizer() {
-        longPressAddPinRecognizer = UILongPressGestureRecognizer(target: self, action: "longPressAddPinRecognizer:")
+        longPressAddPinRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(VirtualTouristViewController.longPressAddPinRecognizer(_:)))
         mapView.addGestureRecognizer(longPressAddPinRecognizer)
     }
     
@@ -80,7 +80,7 @@ class VirtualTouristViewController: UIViewController, MKMapViewDelegate {
         mapView.addGestureRecognizer(longPressAddPinRecognizer)
         heightBottomViewConstraint.constant = 0
         isRemoving = false
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .Plain, target: self, action: "edit:")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .Plain, target: self, action: #selector(VirtualTouristViewController.edit(_:)))
     }
     
     //MARK: - MapView Delegate
@@ -88,9 +88,9 @@ class VirtualTouristViewController: UIViewController, MKMapViewDelegate {
     func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
         let annotation = view.annotation
         let request = NSFetchRequest(entityName: "Pin")
-        let latitude = NSNumber(double: (annotation?.coordinate.latitude)!)
+        let latitude = 0//NSNumber(double: (annotation?.coordinate.latitude)!)
         let longitude = NSNumber(double: (annotation?.coordinate.longitude)!)
-        request.predicate = NSPredicate(format: "latitude == %@ AND longitude == %@", latitude, longitude)
+        request.predicate = NSPredicate(format: "latitude == %@ AND longitud == %@", latitude, longitude)
         do {
             let pins: [Pin] = try sharedContext.executeFetchRequest(request) as! [Pin]
             let pin = pins[0]
@@ -113,7 +113,7 @@ class VirtualTouristViewController: UIViewController, MKMapViewDelegate {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let photosController = segue.destinationViewController as! PinPhotosViewController
-        photosController.pin = sender as! Pin
+        //photosController.pin = sender as! Pin
     }
     
     //MARK: - Alert
